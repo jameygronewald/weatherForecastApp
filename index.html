@@ -3,13 +3,39 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <link rel="stylesheet" href="https://stackpath.bootstrapcdn.com/bootstrap/4.5.0/css/bootstrap.min.css" integrity="sha384-9aIt2nRpC12Uk9gS9baDl411NQApFmC26EwAOH8WgZl5MYYxFfc+NcPb1dKGj7Sk" crossorigin="anonymous">
     <link href = "assets/style.css" rel = "stylesheet"/>
     <title>Weather Forecast by City</title>
 </head>
 <body>
     <header>
-        <h1 id = "pageHeader">WEATHER FORECAST BY CITY</h1>
+        <nav class="navbar navbar-dark bg-dark">
+            <h2>WEATHER DASHBOARD</h2>
+        </nav>
     </header>
+    <main class = "container-fluid">
+        <div class = "row">
+            <!-- SEARCH AND CITY BUTTON COLUMN -->
+            <div class = " searchColumn col-md-4">
+                <form>
+                    <label>SEARCH FOR A CITY: </label>
+                    <input type = "text" id = "citySearch"/>
+                </form>
+                <div class = "cityButtons"></div>
+            </div>
+            <!-- FORECAST COLUMN -->
+            <div class = "forecastColumn col-md-8">
+                <!-- CURRENT DAY FORECAST ROW -->
+                <div class = "currentDayRow row">
+                    
+                </div>
+                <!-- 5 DAY FORECAST ROW -->
+                <div class = "cardRow row">
+
+                </div>
+            </div>
+        </div>
+    </main>
     <script src = "assets/script.js"></script>
     <script
         src="https://code.jquery.com/jquery-3.5.1.min.js"
