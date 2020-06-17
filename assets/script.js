@@ -41,6 +41,7 @@ $(document).ready(function() {
                 method: 'GET'
             }).then(function(response) {
                 console.log(response);
+                $('.cardRow').empty();
                 let i = 0;
                 while (i < 5) {
                     let dailyTempFarenheit = ((response.daily[i].temp.day - 273.15) * 1.8 + 32).toFixed(1);
