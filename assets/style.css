@@ -19,3 +19,7 @@ h2 {
 .searchColumn {
     background-color: lightgray;
 }
+
+#currentDayRow {
+    display: block;
+}
