@@ -13,7 +13,6 @@ $(document).ready(function() {
         event.preventDefault();
         $('#currentDayRow').empty();
         let searchInput = $('#citySearch').val();
-        console.log(searchInput);
         let queryURL = 'http://api.openweathermap.org/data/2.5/weather?q=' + searchInput + '&APPID=207015d3d9ea763c8fa74acf5fe16ce5';
         $.ajax({
             url: queryURL,
@@ -32,22 +31,25 @@ $(document).ready(function() {
                 url: queryURL_UV,
                 method: 'GET'
             }).then(function(response) {
-                console.log(response.value);
+                console.log(response);
                 $('#currentDayRow').append($('<p>').text('UV Index: ' + response.value));
 
-            })
+            });
             let queryURLDaily = 'https://api.openweathermap.org/data/2.5/onecall?lat=' + latitude + '&lon=' + longitude + '&exclude=current,minutely,hourly&appid=207015d3d9ea763c8fa74acf5fe16ce5'
             $.ajax({
                 url: queryURLDaily,
                 method: 'GET'
             }).then(function(response) {
                 console.log(response);
-                console.log(response.daily[0].humidity)
-                console.log(response.daily[0].temp.day)
-                let dailyTempFarenheit = ((response.daily[0].temp.day - 273.15) * 1.8 + 32).toFixed(1);
-                console.log(dailyTempFarenheit)
-                $('#day1Temp').text('Temperature: ' + dailyTempFarenheit + '°F');
-            })
+                let i = 0;
+                while (i < 5) {
+                    let dailyTempFarenheit = ((response.daily[i].temp.day - 273.15) * 1.8 + 32).toFixed(1);
+                    $('.cardRow').append($('<div class="card col-md-2"><div class="card-body"><h5 class="card-title" id = "day' + i + '"></h5><p class="card-text cardTemp"id = "day' + i + 'Temp"></p><p class="card-text cardHumidity" id = "day' + i + 'Humidity"></p></div></div>'));
+                    $('#day' + i + 'Temp').text('Temperature: ' + dailyTempFarenheit + '°F');
+                    $('#day' + i + 'Humidity').text('Humidity: ' + response.daily[i].humidity + '%');
+                    i++;
+                };
+            });
         });
     });
 
