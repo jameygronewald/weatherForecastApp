@@ -1,3 +1,8 @@
+* {
+    margin: 0;
+    padding: 0;
+}
+
 .navbar {
     display: block;
 }
@@ -5,4 +10,12 @@
 h2 {
     text-align: center;
     color: #f4f4f4
+}
+
+.container-fluid {
+    max-height: auto;
+}
+
+.searchColumn {
+    background-color: lightgray;
 }
