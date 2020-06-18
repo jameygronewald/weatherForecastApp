@@ -18,7 +18,9 @@ $(document).ready(function() {
         $('#currentDayRow').empty();
         let searchInput = $('#citySearch').val();
         let cityButton = $('<button>').attr('class', 'col-sm-11 btn btn-light').attr('data-city', searchInput).text(searchInput);
-        $('.cityButtons').append(cityButton);
+        if (searchInput !== '') {
+            $('.cityButtons').append(cityButton);
+        }
         $(cityButton).on('click', function(event) {
             event.preventDefault();
             searchInput = $(cityButton).attr('data-city').val();
@@ -33,7 +35,7 @@ $(document).ready(function() {
             let latitude = response.coord.lat;
             let longitude = response.coord.lon;
             let tempFarenheit = ((response.main.temp - 273.15) * 1.8 + 32).toFixed(1);
-            $('#currentDayRow').append($('<h3>').text(response.name + ' (' + today + ')'));
+            $('#currentDayRow').append($('<h3>').text(response.name + ' (' + today + ')').append('<img src = "http://openweathermap.org/img/wn/' + response.weather[0].icon + '@2x.png" alt = "' + response.weather[0].description + '">'));
             $('#currentDayRow').append($('<p>').text('Temperature: ' + tempFarenheit + '°F'));
             $('#currentDayRow').append($('<p>').text('Humidity: ' + response.main.humidity + '%'));
             $('#currentDayRow').append($('<p>').text('Wind Speed: ' + response.wind.speed + 'MPH'));
@@ -56,7 +58,7 @@ $(document).ready(function() {
                 }
                 $('#currentDayRow').append($('<p>').text('UV Index: ').append(UVIndexColor));
             });
-            let queryURLDaily = 'https://api.openweathermap.org/data/2.5/onecall?lat=' + latitude + '&lon=' + longitude + '&exclude=current,minutely,hourly&appid=207015d3d9ea763c8fa74acf5fe16ce5'
+            let queryURLDaily = 'http://api.openweathermap.org/data/2.5/onecall?lat=' + latitude + '&lon=' + longitude + '&exclude=current,minutely,hourly&appid=207015d3d9ea763c8fa74acf5fe16ce5'
             $.ajax({
                 url: queryURLDaily,
                 method: 'GET'
@@ -74,7 +76,7 @@ $(document).ready(function() {
                         day5
                     ]
                     let dailyTempFarenheit = ((response.daily[i].temp.day - 273.15) * 1.8 + 32).toFixed(1);
-                    $('.cardRow').append($('<div class="card col-md-2.4 bg-primary text-white"><div class="card-body"><h5 class="card-title" id = "day' + i + '"></h5><p class="card-text cardTemp"id = "day' + i + 'Temp"></p><p class="card-text cardHumidity" id = "day' + i + 'Humidity"></p></div></div>'));
+                    $('.cardRow').append($('<div class="card col-md-2.4 bg-primary text-white"><div class="card-body"><h5 class="card-title" id = "day' + i + '"></h5><img src = "http://openweathermap.org/img/wn/' + response.daily[i].weather[0].icon + '@2x.png" alt = "' + response.daily[i].weather[0].description + '"><p class="card-text cardTemp"id = "day' + i + 'Temp"></p><p class="card-text cardHumidity" id = "day' + i + 'Humidity"></p></div></div>'));
                     $('#day' + i).text(forecastDays[i-1]);
                     $('#day' + i + 'Temp').text('Temperature: ' + dailyTempFarenheit + '°F');
                     $('#day' + i + 'Humidity').text('Humidity: ' + response.daily[i].humidity + '%');
