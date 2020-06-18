@@ -45,10 +45,23 @@ h2 {
     background-color: red;
 }
 
+span {
+    padding: 5px;
+    border-radius: 4px;
+}
+
 .cardRow {
     margin-left: 4px;
 }
 
 .card {
     margin: 0px 10px;
+}
+
+.card-title {
+    font-size: 17px;
+}
+
+.card-text {
+    font-size: 14px;
 }
