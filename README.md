@@ -37,7 +37,7 @@ Application that runs in browser and provides user with weather info using Openw
 ---
 
 ## Credits
-Thanks to Georgia Tech Coding Boot Camp for providing the conceptual design. Thanks for Openweather API, as well.
+Thanks to Georgia Tech Coding Boot Camp for providing the conceptual design. Thanks to Openweather API, as well.
 
 ---
 
