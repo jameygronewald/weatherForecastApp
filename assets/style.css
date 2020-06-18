@@ -20,8 +20,17 @@ h2 {
     background-color: lightgray;
 }
 
+.btn-light {
+    border: solid 1px lightgray;
+    margin: 2px;
+}
+
 #currentDayRow {
     display: block;
+    margin: 5px;
+    border: solid 1.5px lightgray;
+    border-radius: 4px;
+    padding: 10px;
 }
 
 .moderate {
@@ -34,6 +43,10 @@ h2 {
 
 .danger {
     background-color: red;
+}
+
+.cardRow {
+    margin-left: 4px;
 }
 
 .card {
