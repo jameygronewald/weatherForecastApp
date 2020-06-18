@@ -24,6 +24,18 @@ h2 {
     display: block;
 }
 
+.moderate {
+    background-color: green;
+}
+
+.warning {
+    background-color: orange;
+}
+
+.danger {
+    background-color: red;
+}
+
 .card {
     margin: 0px 10px;
 }
