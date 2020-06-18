@@ -1,16 +1,11 @@
 $(document).ready(function() {
     // INITIALIZE GLOBAL VARIABLES
     let today = moment().format('MMMM Do YYYY');
-    console.log(today);
     let day1 = moment().add(1, 'days').format('MMMM Do YYYY');
     let day2 = moment().add(2, 'days').format('MMMM Do YYYY');
     let day3 = moment().add(3, 'days').format('MMMM Do YYYY');
     let day4 = moment().add(4, 'days').format('MMMM Do YYYY');
     let day5 = moment().add(5, 'days').format('MMMM Do YYYY');
-    console.log(day2);
-    console.log(day3);
-    console.log(day4);
-    console.log(day5);
     // FUNCTIONS
 
 
@@ -22,7 +17,13 @@ $(document).ready(function() {
         event.preventDefault();
         $('#currentDayRow').empty();
         let searchInput = $('#citySearch').val();
-        $('.searchColumn').append('<button class = "col-sm-11 btn btn-light">' + searchInput + '</button>')
+        let cityButton = $('<button>').attr('class', 'col-sm-11 btn btn-light').attr('data-city', searchInput).text(searchInput);
+        $('.cityButtons').append(cityButton);
+        $(cityButton).on('click', function(event) {
+            event.preventDefault();
+            searchInput = $(cityButton).attr('data-city').val();
+            console.log(searchInput);
+        });
         let queryURL = 'http://api.openweathermap.org/data/2.5/weather?q=' + searchInput + '&APPID=207015d3d9ea763c8fa74acf5fe16ce5';
         $.ajax({
             url: queryURL,
@@ -43,17 +44,17 @@ $(document).ready(function() {
             }).then(function(response) {
                 console.log(response);
                 let UVIndex = response.value;
-                /* if (UVIndex < 3) {
-                    UVIndex.addClass('moderate');
+                let UVIndexColor = $('<span>' + UVIndex + '</span>')
+                if (UVIndex < 3) {
+                    UVIndexColor.addClass('moderate');
                 }
                 else if (UVIndex < 7) {
-                    UVIndex.addClass('warning');
+                    UVIndexColor.addClass('warning');
                 }
                 else {
-                    UVIndex.addClass('danger');
-                } */
-                $('#currentDayRow').append($('<p>').text('UV Index: ' + UVIndex));
-
+                    UVIndexColor.addClass('danger');
+                }
+                $('#currentDayRow').append($('<p>').text('UV Index: ').append(UVIndexColor));
             });
             let queryURLDaily = 'https://api.openweathermap.org/data/2.5/onecall?lat=' + latitude + '&lon=' + longitude + '&exclude=current,minutely,hourly&appid=207015d3d9ea763c8fa74acf5fe16ce5'
             $.ajax({
@@ -73,7 +74,7 @@ $(document).ready(function() {
                         day5
                     ]
                     let dailyTempFarenheit = ((response.daily[i].temp.day - 273.15) * 1.8 + 32).toFixed(1);
-                    $('.cardRow').append($('<div class="card col-md-2 bg-primary text-white"><div class="card-body"><h5 class="card-title" id = "day' + i + '"></h5><p class="card-text cardTemp"id = "day' + i + 'Temp"></p><p class="card-text cardHumidity" id = "day' + i + 'Humidity"></p></div></div>'));
+                    $('.cardRow').append($('<div class="card col-md-2.4 bg-primary text-white"><div class="card-body"><h5 class="card-title" id = "day' + i + '"></h5><p class="card-text cardTemp"id = "day' + i + 'Temp"></p><p class="card-text cardHumidity" id = "day' + i + 'Humidity"></p></div></div>'));
                     $('#day' + i).text(forecastDays[i-1]);
                     $('#day' + i + 'Temp').text('Temperature: ' + dailyTempFarenheit + '°F');
                     $('#day' + i + 'Humidity').text('Humidity: ' + response.daily[i].humidity + '%');
@@ -82,6 +83,4 @@ $(document).ready(function() {
             });
         });
     });
-
-
 });
