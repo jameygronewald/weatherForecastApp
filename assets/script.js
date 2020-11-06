@@ -10,17 +10,13 @@ $(document).ready(function () {
   let cityButtonArray = [];
   const savedButtons = JSON.parse(localStorage.getItem('buttons')) || null;
   if (savedButtons) cityButtonArray = [...savedButtons];
-  console.log(cityButtonArray);
 
   // FUNCTIONS
 
   const getWeatherData = city => {
     const queryURL = `https://api.openweathermap.org/data/2.5/weather?q=${city}&APPID=207015d3d9ea763c8fa74acf5fe16ce5`;
 
-    $.ajax({
-      url: queryURL,
-      method: 'GET',
-    }).then(response => {
+    $.ajax({ url: queryURL, method: 'GET' }).then(response => {
       if (response === null || response === undefined) {
         return alert('Invalid search. Please search a valid city name.');
       }
@@ -36,19 +32,19 @@ $(document).ready(function () {
       $('#currentDayRow').empty();
       $('#currentDayRow').append(
         $('<h3>')
-          .text(response.name + ' (' + today + ')')
+          .text(`${response.name} (${today})`)
           .append(
             `<img src="https://openweathermap.org/img/wn/${response.weather[0].icon}@2x.png" alt="${response.weather[0].description}">`
           )
       );
       $('#currentDayRow').append(
-        $('<p>').text('Temperature: ' + tempFarenheit + '°F')
+        $('<p>').text(`Temperature: ${tempFarenheit}°F`)
       );
       $('#currentDayRow').append(
-        $('<p>').text('Humidity: ' + response.main.humidity + '%')
+        $('<p>').text(`Humidity: ${response.main.humidity}%`)
       );
       $('#currentDayRow').append(
-        $('<p>').text('Wind Speed: ' + response.wind.speed + 'MPH')
+        $('<p>').text(`Wind Speed: ${response.wind.speed}MPH`)
       );
 
       getCurrentUVData(latitude, longitude);
@@ -59,12 +55,11 @@ $(document).ready(function () {
 
   const getCurrentUVData = (lat, long) => {
     const queryURL_UV = `https://api.openweathermap.org/data/2.5/uvi?APPID=207015d3d9ea763c8fa74acf5fe16ce5&lat=${lat}&lon=${long}`;
-    $.ajax({
-      url: queryURL_UV,
-      method: 'GET',
-    }).then(function (response) {
+
+    $.ajax({ url: queryURL_UV, method: 'GET' }).then(response => {
       const UVIndex = response.value;
-      const UVIndexColor = $('<span>' + UVIndex + '</span>');
+      const UVIndexColor = $(`<span>${UVIndex}</span>`);
+
       if (UVIndex < 3) {
         UVIndexColor.addClass('moderate');
       } else if (UVIndex < 7) {
@@ -72,6 +67,7 @@ $(document).ready(function () {
       } else {
         UVIndexColor.addClass('danger');
       }
+
       $('#currentDayRow').append(
         $('<p>').text('UV Index: ').append(UVIndexColor)
       );
@@ -80,30 +76,28 @@ $(document).ready(function () {
 
   const getFiveDayForecast = (lat, long) => {
     const queryURLDaily = `https://api.openweathermap.org/data/2.5/onecall?lat=${lat}&lon=${long}&exclude=current,minutely,hourly&appid=207015d3d9ea763c8fa74acf5fe16ce5`;
-    $.ajax({
-      url: queryURLDaily,
-      method: 'GET',
-    }).then(response => {
+
+    $.ajax({ url: queryURLDaily, method: 'GET' }).then(response => {
       $('.cardRow').empty();
       $('.cardRow').append('<h3 class="col-md-12">5-Day Forecast:</h3>');
 
-      let i = 1;
       const forecastDays = [day1, day2, day3, day4, day5];
-      while (i < 6) {
+      forecastDays.forEach((day, i) => {
         const dailyTempFarenheit = (
           (response.daily[i].temp.day - 273.15) * 1.8 +
           32
         ).toFixed(1);
+
         $('.cardRow').append(
           $(
-            `<div class="card col-xl-2 bg-primary text-white"><div class="card-body"><h5 class="card-title" id = "day${i}"></h5><img src = "https://openweathermap.org/img/wn/${response.daily[i].weather[0].icon}@2x.png" alt = "${response.daily[i].weather[0].description}"><p class="card-text cardTemp"id = "day${i}Temp"></p><p class="card-text cardHumidity" id = "day${i}Humidity"></p></div></div>`
+            `<div class="card col-xl-2 bg-primary text-white"><div class="card-body"><h5 class="card-title" id="day${i}"></h5><img src="https://openweathermap.org/img/wn/${response.daily[i].weather[0].icon}@2x.png" alt="${response.daily[i].weather[0].description}"><p class="card-text cardTemp" id="day${i}Temp"></p><p class="card-text cardHumidity" id="day${i}Humidity"></p></div></div>`
           )
         );
-        $(`#day${i}`).text(forecastDays[i - 1]);
-        $(`#day${i}Temp`).text('Temperature: ' + dailyTempFarenheit + '°F');
+
+        $(`#day${i}`).text(day);
+        $(`#day${i}Temp`).text(`Temperature: ${dailyTempFarenheit}°F`);
         $(`#day${i}Humidity`).text(`Humidity: ${response.daily[i].humidity}%`);
-        i++;
-      }
+      });
     });
   };
 
